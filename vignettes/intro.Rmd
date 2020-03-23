@@ -1,0 +1,46 @@
+---
+title: "intro"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(COVID19Erie)
+```
+
+# Case counts
+```{r}
+counts <- caseCounts()
+counts
+```
+
+# Exposed public address
+```{r}
+pubExposed <- exposedPub(google=FALSE)
+head(pubExposed)
+```
+
+# History counts
+```{r}
+countPlot(histoyCount)
+```
+
+# Map
+```{r}
+caseMap(counts, pubExposed)
+```
+
+# Report
+```{r}
+caseReport(counts, pubExposed, historyCount)
+```

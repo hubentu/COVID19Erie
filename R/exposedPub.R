@@ -1,5 +1,6 @@
 #' public exposed
 #'
+#' @importFrom xml2 read_html
 #' @import rvest
 #' @export
 exposedPub <- function(google = TRUE){
