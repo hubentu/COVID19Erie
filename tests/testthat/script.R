@@ -105,7 +105,8 @@ Counts <- rbind(counts,
 chtml <- htmlTable(Counts,
                    caption = txtMergeLines("COVID19 cases (Erie county)",
                                             paste("Last updated:", attributes(counts)$update.time),
-                                            "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
+                                           "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
+                   tfoot = "<a href='http://www2.erie.gov/health/index.php?q=public-advisories'>Public Advisories</a>",
                    col.rgroup = rep(c("none", "yellow"), c(nrow(Counts)-1, 1)))
 
 combineWidgets(lf, chtml, ncol=2, colsize = c(3, 1))

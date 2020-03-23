@@ -11,9 +11,10 @@ countPlot <- function(historyCount, update = FALSE){
     if(update){
         if(!as.character(Sys.Date()) %in% historyCount$date){
             counts <- caseCounts()
-            tcount <- colSums(counts[,-1])
+            current <- colSums(counts[,-1])
             historyCount <- rbind(historyCount,
-                                  data.frame(date = as.character(Sys.Date()), rbind(tcount)))
+                                  data.frame(date = as.character(Sys.Date()), rbind(current)))
+            return(historyCount)
         }
     }
     hcounts <- historyCount %>% pivot_longer(-1, names_to="group", values_to="count") %>%
