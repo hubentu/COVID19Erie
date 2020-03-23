@@ -9,7 +9,7 @@ Authors@R:
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 Depends: R (>= 3.6.0)
-Imports: leaflet, rvest, webdriver
+Imports: leaflet, rvest, webdriver, htmlTable, manipulateWidget, sp, tidyr, dplyr, htmltools, plotly, forcats
 License: What license it uses
 Encoding: UTF-8
 LazyData: true

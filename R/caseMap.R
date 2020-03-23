@@ -1,6 +1,8 @@
 #' Plot leaflet Map
 #'
 #' @import leaflet
+#' @import sp
+#' @importFrom htmltools HTML
 #' @export
 caseMap <- function(counts, pubExposed){
     fullName <- paste(counts$town, "town")

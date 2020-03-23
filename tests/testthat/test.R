@@ -1,6 +1,9 @@
 
 data("shapeData")
-counts <- caseCounts()
-## addr <- exposedPub()
 data("pubExposed")
+counts <- caseCounts()
+## pubExposed <- exposedPub()
 caseMap(counts, pubExposed)
+countPlot(histoyCount)
+report <- caseReport(counts, pubExposed, historyCount)
+htmlwidgets::saveWidget(report, "COVID19Erie.html")

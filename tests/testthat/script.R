@@ -17,6 +17,9 @@ Sys.sleep(5)
 recovered <- ses$findElement("#ember20")$getText()
 deaths <- ses$findElement("#ember33")$getText()
 confirmed <- ses$findElement("#ember52")$getText()
+updateT <- ses$findElement("#ember10")$getText()
+updateT <- strsplit(updateT, split = "\n")[[1]][2]
+
 town <- strsplit(confirmed, split = "\n")[[1]]
 len <- length(town) - 1
 town <- town[(seq(2, len, 2))]
@@ -32,6 +35,7 @@ counts <- lapply(list(confirmed, recovered, deaths), function(x){
 counts <- data.frame(sub("\\/.*", "", town), do.call(cbind, counts),
                      stringsAsFactors = FALSE)
 colnames(counts) <- c("town", "confirmed", "recovered", "deaths")
+attributes(counts)$update.time <- updateT
 
 ## public exposed
 exposed <- read_html("http://www2.erie.gov/health/index.php?q=public-advisories")
@@ -59,7 +63,8 @@ fullName[fullName == "Buffalo town"] <- "Buffalo city"
 fullName[fullName == "Lackawanna town"] <- "Lackawanna city"
 idx <- match(fullName, shapeData@data$NAMELSAD)
 dat <- shapeData[idx, ]
-dat@data <- dat@data %>% inner_join(counts, by = c("NAME" = "town"))
+dat@data <- cbind(dat@data, counts)
+## dat@data <- dat@data %>% inner_join(counts, by = c("NAME" = "town"))
 
 labs <- mapply(function(n, x, y, z){
     HTML(paste0(n, "<br>",
@@ -72,7 +77,7 @@ SIMPLIFY = FALSE, USE.NAMES = FALSE)
 
 bins <- c(1, 5, 10, 15, 20, 50, 100, Inf)
 pal <- colorBin("YlOrRd", domain = counts$confirmed, bins = bins)
-leaflet(dat)  %>% addTiles() %>%
+lf <- leaflet(dat)  %>% addTiles() %>%
     setView(-78.8, 42.8, 10) %>%
     addPolygons(
         fillColor = ~pal(confirmed),
@@ -91,3 +96,45 @@ leaflet(dat)  %>% addTiles() %>%
              leftPosition = 50) %>%
     addMarkers(pubExposed$lon, pubExposed$lat,
                label = pubExposed$notes)
+
+library(htmlwidgets)
+library(manipulateWidget)
+
+Counts <- rbind(counts,
+                c(town = "Total", colSums(counts[,-1])))
+chtml <- htmlTable(Counts,
+                   caption = txtMergeLines("COVID19 cases (Erie county)",
+                                            paste("Last updated:", attributes(counts)$update.time),
+                                            "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
+                   col.rgroup = rep(c("none", "yellow"), c(nrow(Counts)-1, 1)))
+
+combineWidgets(lf, chtml, ncol=2, colsize = c(3, 1))
+
+##
+historyCount <- data.frame(date = c("2020-03-14",
+                                    "2020-03-15",
+                                    "2020-03-16",
+                                    "2020-03-17",
+                                    "2020-03-18",
+                                    "2020-03-19",
+                                    "2020-03-20",
+                                    "2020-03-21",
+                                    "2020-03-22"),
+                           confirmed = c(3, 7, 7, 20, 27, 29, 47, 56, 64),
+                           recovered = 0,
+                           deaths = 0)
+library(tidyr)
+library(forcats)
+hcounts <- historyCount %>% pivot_longer(-1, names_to="group", values_to="count") %>%
+    mutate(group = fct_relevel(group, "confirmed", "recovered", "deaths"))
+
+library(plotly)
+p <- ggplot(hcounts, aes(x = date, y = count, group = group, colour = group)) +
+    geom_line() + geom_point() +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+pl <- ggplotly(p)
+
+combineWidgets(lf, combineWidgets(chtml, pl, nrow = 2, rowsize = c(3, 2)),
+               ncol = 2, colsize = c(2, 1))

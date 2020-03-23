@@ -6,10 +6,13 @@ caseCounts <- function(){
     pjs <- run_phantomjs()
     ses <- Session$new(port = pjs$port)
     ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
-    Sys.sleep(2)
+    Sys.sleep(5)
     recovered <- ses$findElement("#ember20")$getText()
     deaths <- ses$findElement("#ember33")$getText()
     confirmed <- ses$findElement("#ember52")$getText()
+    updateT <- ses$findElement("#ember10")$getText()
+    updateT <- strsplit(updateT, split = "\n")[[1]][2]
+    
     town <- strsplit(confirmed, split = "\n")[[1]]
     len <- length(town) - 1
     town <- town[(seq(2, len, 2))]
@@ -25,5 +28,7 @@ caseCounts <- function(){
     counts <- data.frame(sub("\\/.*", "", town), do.call(cbind, counts),
                          stringsAsFactors = FALSE)
     colnames(counts) <- c("town", "confirmed", "recovered", "deaths")
+    attributes(counts)$update.time <- updateT
+
     return(counts)
 }
