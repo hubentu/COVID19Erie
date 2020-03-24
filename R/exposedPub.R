@@ -12,7 +12,9 @@ exposedPub <- function(google = TRUE){
     places <- places[places != ""]
     places <- sub("2020,", "2020:", places)
     addr <- sub(".*: |.*m., ", "", places)
-    addr[grep("Flight", addr)] <- "Buffalo Niagara International Airport"
+    idx <- grep("Flight", addr)
+    addr[idx] <- "Buffalo Niagara International Airport"
+    places[idx] <- paste(places[idx], collapse = "<br>")
     addr[grep("Hotel Henry", addr)] <- "Hotel Henry, Buffalo"
     if(google){
         pubExposed <- geocode(addr)
@@ -20,5 +22,5 @@ exposedPub <- function(google = TRUE){
     }else{
         pubExposed <- places
     }
-    return(pubExposed)
+    return(unique(pubExposed))
 }
