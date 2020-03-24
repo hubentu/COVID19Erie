@@ -29,6 +29,6 @@ caseCounts <- function(){
                          stringsAsFactors = FALSE)
     colnames(counts) <- c("town", "confirmed", "recovered", "deaths")
     attributes(counts)$update.time <- updateT
-
+    counts[is.na(counts)] <- 0
     return(counts)
 }
