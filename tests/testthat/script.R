@@ -139,3 +139,6 @@ pl <- ggplotly(p)
 
 combineWidgets(lf, combineWidgets(chtml, pl, nrow = 2, rowsize = c(3, 2)),
                ncol = 2, colsize = c(2, 1))
+
+##
+library(flexdashboard)

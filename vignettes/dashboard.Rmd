@@ -1,0 +1,86 @@
+---
+title: "COVID19 in Erie county"
+author: "Qiang Hu"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    source_code: embed
+    vertical_layout: scroll
+---
+
+```{r setup, include=FALSE, eval=FALSE}
+library(flexdashboard)
+library(COVID19Erie)
+counts <- caseCounts()
+Counts <- rbind(counts,
+                c(town = "Total", colSums(counts[,-1])))
+```
+
+Report
+=======================================================================
+
+Row {data-width=400}
+-----------------------------------------------------------------------
+
+### confirmed {.value-box}
+
+```{r}
+valueBox(
+  value = sum(counts$confirmed),
+  caption = "Total confirmed cases",
+  icon = "fas fa-user-md",
+  color = "purple"
+)
+```
+
+
+### recovered {.value-box}
+
+```{r}
+valueBox(
+  value = sum(counts$recovered),
+  caption = "Total recovered cases",
+  icon = "fas fa-ambulance",
+  color = "forestgreen"
+)
+```
+
+### death {.value-box}
+
+```{r}
+valueBox(
+  value = sum(counts$deaths),
+  caption = "Death cases",
+  icon = "fas fa-heart-broken",
+  color = "red"
+)
+```
+
+
+Column {data-height=800}
+-----------------------------------------------------------------------
+    
+### Map
+    
+```{r}
+caseMap(counts, pubExposed, titlePos = NULL)
+```
+   
+Column {data-height=600}
+----------------------------------------------------------------------
+
+### Town cases
+
+```{r}
+htmlTable(Counts,
+          caption = txtMergeLines("COVID19 cases (Erie county)",
+                                  paste("Last updated:", attributes(counts)$update.time),
+                                  "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
+          tfoot = "<a href='http://www2.erie.gov/health/index.php?q=public-advisories'>Public Advisories</a>",
+          col.rgroup = rep(c("none", "yellow"), c(nrow(Counts)-1, 1)))
+```
+
+### Daily cumulative cases
+```{r}
+countPlot(historyCount)
+```

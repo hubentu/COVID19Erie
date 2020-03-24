@@ -4,7 +4,7 @@
 #' @import sp
 #' @importFrom htmltools HTML
 #' @export
-caseMap <- function(counts, pubExposed){
+caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
     fullName <- paste(counts$town, "town")
     fullName[fullName == "Buffalo town"] <- "Buffalo city"
     fullName[fullName == "Lackawanna town"] <- "Lackawanna city"
@@ -24,7 +24,7 @@ caseMap <- function(counts, pubExposed){
     
     bins <- c(1, 5, 10, 15, 20, 50, 100, Inf)
     pal <- colorBin("YlOrRd", domain = counts$confirmed, bins = bins)
-    leaflet(dat)  %>% addTiles() %>%
+    lf <- leaflet(dat)  %>% addTiles() %>%
         setView(-78.8, 42.8, 10) %>%
         addPolygons(
             fillColor = ~pal(confirmed),
@@ -34,13 +34,16 @@ caseMap <- function(counts, pubExposed){
             label = labs,
             fillOpacity = 0.5) %>%
         addLegend("bottomright", pal = pal, values = ~confirmed,
-                  title = "confirmed") %>%    
-        addTitle(paste("COVID19 cases (Erie county)<br>",
-                       "Confirmed Count:", sum(counts$confirmed), "<br>",
-                       "Recovered Count", sum(counts$recovered), "<br>",
-                       "Deaths Count:", sum(counts$deaths), "<br>"),
-                 fontSize = "14px",
-                 leftPosition = 50) %>%
+                  title = "confirmed") %>%
         addMarkers(pubExposed$lon, pubExposed$lat,
                    label = pubExposed$notes)
+    if(!is.null(titlePos)){
+        lf <- lf %>% addTitle(paste("COVID19 cases (Erie county)<br>",
+                              "Confirmed Count:", sum(counts$confirmed), "<br>",
+                              "Recovered Count", sum(counts$recovered), "<br>",
+                              "Deaths Count:", sum(counts$deaths), "<br>"),
+                        fontSize = "18px",
+                 leftPosition = titlePos[1], topPosition = titlePos[2])
+    }
+    return(lf)
 }
