@@ -18,7 +18,7 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
                     "confirmed: ", x, "<br>",
                     "recovered: ", y, "<br>",
                     "deaths: ", z, "<br>",
-                    "updated: ", Sys.Date()))
+                    "updated: ", gsub("\\(updated |\\)", "", attributes(counts)$update.time)))
     }, counts$town, counts$confirmed, counts$recovered, counts$deaths,
     SIMPLIFY = FALSE, USE.NAMES = FALSE)
     
