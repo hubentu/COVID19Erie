@@ -28,7 +28,7 @@ caseCounts <- function(){
     counts <- data.frame(sub("\\/.*", "", town), do.call(cbind, counts),
                          stringsAsFactors = FALSE)
     colnames(counts) <- c("town", "confirmed", "recovered", "deaths")
-    attributes(counts)$update.time <- updateT
     counts[is.na(counts)] <- 0
+    attributes(counts)$update.time <- updateT
     return(counts)
 }
