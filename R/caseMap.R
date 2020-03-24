@@ -32,11 +32,17 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
             dashArray = "3",
             weight = 2,
             label = labs,
-            fillOpacity = 0.5) %>%
+            fillOpacity = 0.5,
+            group = "Case Counts") %>%
         addLegend("bottomright", pal = pal, values = ~confirmed,
                   title = "confirmed") %>%
         addMarkers(pubExposed$lon, pubExposed$lat,
-                   label = pubExposed$notes)
+                   label = pubExposed$notes,
+                   group = "Public Advisories") %>%
+        addLayersControl(
+            overlayGroups =c("Case Counts", "Public Advisories"),
+            options = layersControlOptions(collapsed=FALSE)
+        )
     if(!is.null(titlePos)){
         lf <- lf %>% addTitle(paste("COVID19 cases (Erie county)<br>",
                               "Confirmed Count:", sum(counts$confirmed), "<br>",
