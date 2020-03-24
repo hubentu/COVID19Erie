@@ -1,6 +1,6 @@
 ---
 title: "COVID19 in Erie county"
-author: "Qiang Hu"
+author: "Q Hu"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -17,6 +17,7 @@ library(COVID19Erie)
 counts <- caseCounts()
 Counts <- rbind(counts,
                 c(town = "Total", colSums(counts[,-1])))
+pubExposed <- exposedPub()
 ```
 
 Report

@@ -4,7 +4,8 @@
 counts <- caseCounts()
 pubExposed <- exposedPub()
 ## caseMap(counts, pubExposed)
-historyCount <- countPlot(histoyCount, update = TRUE)
-use_data(histoyCount)
+historyCount <- countPlot(historyCount, update = TRUE)
+rownames(historyCount) <- NULL
+use_data(historyCount, overwrite=TRUE)
 report <- caseReport(counts, pubExposed, historyCount)
 htmlwidgets::saveWidget(report, "index.html")
