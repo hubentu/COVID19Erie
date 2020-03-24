@@ -76,12 +76,22 @@ Column {data-height=600}
 ### Town cases
 
 ```{r}
-htmlTable(Counts,
-          caption = txtMergeLines("COVID19 cases (Erie county)",
-                                  paste("Last updated:", attributes(counts)$update.time),
-                                  "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
-          tfoot = "<a href='http://www2.erie.gov/health/index.php?q=public-advisories'>Public Advisories</a>",
-          col.rgroup = rep(c("none", "yellow"), c(nrow(Counts)-1, 1)))
+library(knitr)
+library(kableExtra)
+kable(Counts,
+      caption = "COVID19 cases (Erie county)") %>%
+    kable_styling(full_width = TRUE) %>% 
+    footnote(general = c(paste("Last updated:", attributes(counts)$update.time),
+                         "[Data Source](https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1)",
+                         "[Public Advisories](http://www2.erie.gov/health/index.php?q=public-advisories)")) %>%
+scroll_box(height = "600px")
+
+##htmlTable(Counts,
+##          caption = txtMergeLines("COVID19 cases (Erie county)",
+##                                  paste("Last updated:", attributes(counts)$update.time),
+##                                  "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
+##          tfoot = "<a href='http://www2.erie.gov/health/index.php?q=public-advisories'>Public Advisories</a>",
+##          col.rgroup = rep(c("none", "yellow"), c(nrow(Counts)-1, 1)))
 ```
 
 ### Daily cumulative cases
