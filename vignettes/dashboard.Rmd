@@ -4,8 +4,11 @@ author: "Qiang Hu"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
+    social: menu
     source_code: embed
     vertical_layout: scroll
+    navbar:
+      - { icon: fa-github, href: "https://github.com/hubentu/COVID19Erie"}
 ---
 
 ```{r setup, include=FALSE, eval=FALSE}
