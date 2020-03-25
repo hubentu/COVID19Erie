@@ -15,10 +15,13 @@ output:
 ```{r setup, include=FALSE, eval=FALSE}
 library(flexdashboard)
 library(COVID19Erie)
+pubExposed <- exposedPub()
+```
+
+```{r}
 counts <- caseCounts()
 Counts <- rbind(counts,
                 c(town = "Total", colSums(counts[,-1])))
-pubExposed <- exposedPub()
 ```
 
 <!-- Report -->
@@ -31,19 +34,28 @@ Row {data-width=400}
 
 ```{r}
 valueBox(
-  value = sum(counts$confirmed),
+  value = attributes(counts)$total.confirmed,
   caption = "Total confirmed cases",
   icon = "fas fa-user-md",
   color = "purple"
 )
 ```
 
+### Active Cases {.value-box}
+```{r}
+valueBox(
+  value = attributes(counts)$active.cases,
+  caption = "Active cases",
+  icon = "fas fa-ambulance",
+  color = "#1f77b4"
+)
+```
 
 ### recovered {.value-box}
 
 ```{r}
 valueBox(
-  value = sum(counts$recovered),
+  value = attributes(counts)$total.recovered,
   caption = "Total recovered cases",
   icon = "fas fa-ambulance",
   color = "forestgreen"
@@ -54,7 +66,7 @@ valueBox(
 
 ```{r}
 valueBox(
-  value = sum(counts$deaths),
+  value = attributes(counts)$total.deaths,
   caption = "Death cases",
   icon = "fas fa-heart-broken",
   color = "red"
@@ -84,15 +96,9 @@ kable(Counts,
     kable_styling(full_width = TRUE) %>% 
     footnote(general = c(paste("Last updated:", attributes(counts)$update.time),
                          "[Data Source](https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1)",
-                         "[Public Advisories](http://www2.erie.gov/health/index.php?q=public-advisories)")) %>%
+                         "[Public Advisories](http://www2.erie.gov/health/index.php?q=public-advisories)",
+                         "The data is only for educational and academic research purposes.")) %>%
 scroll_box(height = "600px")
-
-##htmlTable(Counts,
-##          caption = txtMergeLines("COVID19 cases (Erie county)",
-##                                  paste("Last updated:", attributes(counts)$update.time),
-##                                  "<a href='https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1'>Data Source</a>"),
-##          tfoot = "<a href='http://www2.erie.gov/health/index.php?q=public-advisories'>Public Advisories</a>",
-##          col.rgroup = rep(c("none", "yellow"), c(nrow(Counts)-1, 1)))
 ```
 
 ### Daily cumulative cases
