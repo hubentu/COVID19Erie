@@ -8,8 +8,8 @@ caseCounts <- function(){
     ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
     Sys.sleep(5)
     recovered <- ses$findElement("#ember20")$getText()
-    deaths <- ses$findElement("#ember33")$getText()
-    confirmed <- ses$findElement("#ember52")$getText()
+    deaths <- ses$findElement("#ember43")$getText() # update to 43
+    confirmed <- ses$findElement("#ember62")$getText() # 62
     updateT <- ses$findElement("#ember10")$getText()
     updateT <- strsplit(updateT, split = "\n")[[1]][2]
     
