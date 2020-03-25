@@ -5,10 +5,11 @@ output:
   flexdashboard::flex_dashboard:
     orientation: rows
     social: menu
-    source_code: embed
-    vertical_layout: scroll
     navbar:
       - { icon: fa-github, href: "https://github.com/hubentu/COVID19Erie"}
+      - { title: "Erie Case Map", href: "https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1"}
+    source_code: embed
+    vertical_layout: scroll
 ---
 
 ```{r setup, include=FALSE, eval=FALSE}
@@ -20,8 +21,8 @@ Counts <- rbind(counts,
 pubExposed <- exposedPub()
 ```
 
-Report
-=======================================================================
+<!-- Report -->
+<!-- ======================================================================= -->
 
 Row {data-width=400}
 -----------------------------------------------------------------------
