@@ -7,7 +7,9 @@ caseCounts <- function(){
     ses <- Session$new(port = pjs$port)
     ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
     Sys.sleep(5)
-    dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
+    contents <- ses$getActiveElement()$getText()
+    ## dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
+    dat <- strsplit(contents, split = "\n")[[1]]
     t_active <- as.integer(dat[grep("Active Cases", dat) + 1])
     t_recovered <- as.integer(dat[grep("Recovered", dat) + 1])
     t_deaths <- as.integer(dat[grep("Total Deaths", dat) + 1])
@@ -20,8 +22,9 @@ caseCounts <- function(){
         stringsAsFactors = FALSE)
     counts <- data.frame(confirmed, recovered = NA, deaths = NA)
     
-    updateT <- ses$findElement("#ember10")$getText()
-    updateT <- strsplit(updateT, split = "\n")[[1]][2]
+    ## updateT <- ses$findElement("#ember10")$getText()
+    ## updateT <- strsplit(updateT, split = "\n")[[1]][2]
+    updateT <- dat[grep("updated", dat)]
     
     ## recovered <- ses$findElement("#ember20")$getText()
     ## deaths <- ses$findElement("#ember43")$getText() # update to 43

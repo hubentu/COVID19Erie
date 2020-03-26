@@ -8,6 +8,9 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
     fullName <- paste(counts$town, "town")
     fullName[fullName == "Buffalo town"] <- "Buffalo city"
     fullName[fullName == "Lackawanna town"] <- "Lackawanna city"
+    fullName[fullName == "City of Tonawanda town"] <- "Tonawanda city"
+    fullName[fullName == "Cattaraugus Indian Reservation town"] <- "Cattaraugus Reservation"
+    
     idx <- match(fullName, shapeData@data$NAMELSAD)
     dat <- shapeData[idx, ]
     dat@data <- cbind(dat@data, counts)
