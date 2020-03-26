@@ -11,10 +11,13 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
     fullName[fullName == "City of Tonawanda town"] <- "Tonawanda city"
     fullName[fullName == "Cattaraugus Indian Reservation town"] <- "Cattaraugus Reservation"
     
-    idx <- match(fullName, shapeData@data$NAMELSAD)
-    dat <- shapeData[idx, ]
-    dat@data <- cbind(dat@data, counts)
+    ## idx <- match(fullName, shapeData@data$NAMELSAD)
+    ## dat <- shapeData[idx, ]
+    ## dat@data <- cbind(dat@data, counts)
     ## dat@data <- dat@data %>% inner_join(counts, by = c("NAME" = "town"))
+    idx <- shapeData@data$NAMELSAD %in% fullName
+    dat <- shapeData[idx, ]
+    dat@data <- cbind(dat@data, counts[match(dat@data$NAMELSAD, fullName),])
     
     labs <- mapply(function(n, x, y, z){
         HTML(paste0(n, "<br>",
@@ -22,11 +25,11 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
                     "recovered: ", y, "<br>",
                     "deaths: ", z, "<br>",
                     "updated: ", gsub("\\(updated |\\)", "", attributes(counts)$update.time)))
-    }, counts$town, counts$confirmed, counts$recovered, counts$deaths,
+    }, dat@data$town, dat@data$confirmed, dat@data$recovered, dat@data$deaths,
     SIMPLIFY = FALSE, USE.NAMES = FALSE)
     
     bins <- c(1, 5, 10, 15, 20, 50, 100, Inf)
-    pal <- colorBin("YlOrRd", domain = counts$confirmed, bins = bins)
+    pal <- colorBin("YlOrRd", domain = dat@data$confirmed, bins = bins)
     lf <- leaflet(dat)  %>% addTiles() %>%
         setView(-78.8, 42.8, 10) %>%
         addPolygons(
