@@ -7,8 +7,8 @@ caseCounts <- function(){
     ses <- Session$new(port = pjs$port)
     ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
     Sys.sleep(10)
-    ses$findElement("#ember6")$getText()
-    ##contents <- ses$getActiveElement()$getText()
+    ## contents <- ses$findElement("#ember6")$getText()
+    contents <- ses$getActiveElement()$getText()
     
     ## dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
     dat <- strsplit(contents, split = "\n")[[1]]
