@@ -8,8 +8,8 @@ caseCounts <- function(){
     ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
     Sys.sleep(10)
     ## contents <- ses$findElement("#ember6")$getText()
-    contents <- ses$getActiveElement()$getText()
-    
+    ## contents <- ses$getActiveElement()$getText()
+    contents <- ses$findElement(".dashboard-page")$getText()
     ## dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
     dat <- strsplit(contents, split = "\n")[[1]]
     t_active <- as.integer(dat[grep("Active Cases", dat) + 1])
