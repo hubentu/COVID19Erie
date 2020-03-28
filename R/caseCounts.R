@@ -18,7 +18,9 @@ caseCounts <- function(){
     t_confirmed <- as.integer(dat[grep("Total Confirmed", dat) + 1])
     
     ## confirmed <- dat[(grep("Total Confirmed", dat) + 3):(length(dat)-1)]
-    confirmed <- dat[grep("[0-9] Confirmed", dat)[1]:(length(dat)-1)]
+    idx1 <- grep("[0-9] Confirmed", dat)[1]
+    idx2 <- tail(grep("[0-9] Confirmed", dat), 1) + 1
+    confirmed <- dat[idx1:idx2]
     confirmed <- data.frame(
         town = sub("\\/.*", "", confirmed[seq(2, length(confirmed), 2)]),
         confirmed = as.integer(sub(" .*", "", confirmed[seq(1, length(confirmed), 2)])),
