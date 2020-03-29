@@ -22,6 +22,8 @@ pubExposed <- exposedPub()
 counts <- caseCounts()
 Counts <- rbind(counts,
                 c(town = "Total", colSums(counts[,-1])))
+ycount <- historyCount$confirmed[historyCount$date == Sys.Date() - 1]
+ncount <- attributes(Counts)$total.confirmed - ycount
 ```
 
 <!-- Report -->
@@ -35,7 +37,7 @@ Row {data-width=400}
 ```{r}
 valueBox(
   value = attributes(counts)$total.confirmed,
-  caption = "Total confirmed cases",
+  caption = paste0("Total confirmed cases (+", ncount, ")"),
   icon = "fas fa-ambulance",
   color = "purple"
 )
