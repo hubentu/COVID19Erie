@@ -7,6 +7,7 @@ output:
     navbar:
       - { icon: fa-github, href: "https://github.com/hubentu/COVID19Erie"}
       - { title: "Erie Case Map", href: "https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1"}
+      - { title: "Global Map", href: "https://coronavirus.jhu.edu/map.html"}
     social: menu
     source_code: embed
     vertical_layout: scroll
