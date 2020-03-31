@@ -1,5 +1,6 @@
 ---
-title: "`r paste('COVID19 in Erie county', attributes(counts)$update.time)`"
+title: COVID19 in Erie county
+date: "`r gsub('\\(updated |\\ EST)', '', attributes(counts)$update.time)`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
