@@ -25,7 +25,7 @@ counts <- caseCounts()
 Counts <- rbind(counts,
                 c(town = "Total", colSums(counts[,-1])))
 ycount <- historyCount$confirmed[historyCount$date == Sys.Date() - 1]
-ncount <- attributes(Counts)$total.confirmed - ycount
+ncount <- attributes(counts)$total.confirmed - ycount
 ```
 
 <!-- Report -->
