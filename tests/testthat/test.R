@@ -9,3 +9,5 @@ rownames(historyCount) <- NULL
 use_data(historyCount, overwrite=TRUE)
 report <- caseReport(counts, pubExposed, historyCount)
 htmlwidgets::saveWidget(report, "index.html")
+
+rmarkdown::render("vignettes/dashboard.Rmd")
