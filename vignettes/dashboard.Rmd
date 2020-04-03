@@ -28,9 +28,6 @@ ycount <- historyCount$confirmed[historyCount$date == Sys.Date() - 1]
 ncount <- attributes(counts)$total.confirmed - ycount
 ```
 
-<!-- Report -->
-<!-- ======================================================================= -->
-
 Row {data-width=400}
 -----------------------------------------------------------------------
 
@@ -86,7 +83,12 @@ Column {data-height=800}
 ```{r}
 caseMap(counts, pubExposed, titlePos = NULL)
 ```
-   
+
+### Daily cumulative cases
+```{r}
+countPlot(historyCount)
+```
+
 Column {data-height=600}
 ----------------------------------------------------------------------
 
@@ -105,7 +107,10 @@ kable(Counts,
 scroll_box(height = "600px")
 ```
 
-### Daily cumulative cases
+### Daily counts
 ```{r}
-countPlot(historyCount)
+kable(historyCount[order(historyCount$date, decreasing = TRUE),],
+      caption = "COVID19 Daily cases (Erie county)") %>%
+    kable_styling(full_width = TRUE)%>%
+    scroll_box(height = "600px")
 ```

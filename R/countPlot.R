@@ -13,20 +13,36 @@ countPlot <- function(historyCount, update = FALSE){
             counts <- caseCounts()
             ## current <- colSums(counts[,-1])
             attr <- attributes(counts)
-            current <- data.frame(date = as.character(Sys.Date()), rbind(c(attr$total.confirmed, attr$total.recovered, attr$total.deaths)))
+            current <- data.frame(date = as.character(Sys.Date()),
+                                  rbind(c(attr$total.confirmed,
+                                          0,
+                                          attr$total.confirmed - attr$total.recovered - attr$total.deaths,
+                                          attr$total.recovered,
+                                          attr$total.deaths)))
             colnames(current) <- colnames(historyCount)
-            historyCount <- rbind(historyCount, current)                      
+            historyCount <- rbind(historyCount, current)
+            
+            historyCount$ycount <- c(0, historyCount$confirmed[-nrow(historyCount)])
+            historyCount <- historyCount %>%
+                mutate(active = confirmed - recovered - deaths,
+                       new = confirmed - ycount) %>%
+                select(date, confirmed, new, active, recovered, deaths)
             return(historyCount)
         }
     }
-    historyCount$active <- historyCount$confirmed - historyCount$recovered - historyCount$deaths
-    historyCount$ycount <- c(0, historyCount$confirmed[-nrow(historyCount)])
+    ## historyCount$active <- historyCount$confirmed - historyCount$recovered - historyCount$deaths
+    ## historyCount$ycount <- c(0, historyCount$confirmed[-nrow(historyCount)])
+
+    ## hcounts <- historyCount %>%
+    ##     mutate(active = confirmed - recovered - deaths,
+    ##            new = confirmed - ycount) %>%
+    ##     select(-ycount) %>%
+    ##     pivot_longer(-1, names_to="group", values_to="count") %>%
+    ##     mutate(group = fct_relevel(group, "confirmed", "active", "new", "recovered", "deaths"))
+
     hcounts <- historyCount %>%
-        mutate(active = confirmed - recovered - deaths,
-               new = confirmed - ycount) %>%
-        select(-ycount) %>%
-        pivot_longer(-1, names_to="group", values_to="count") %>%
-        mutate(group = fct_relevel(group, "confirmed", "active", "new", "recovered", "deaths"))
+                pivot_longer(-1, names_to="group", values_to="count") %>%
+                mutate(group = fct_relevel(group, "confirmed", "new", "active", "recovered", "deaths"))
     p <- ggplot(hcounts, aes(x = date, y = count, group = group, colour = group)) +
         geom_line() + geom_point() +
         theme_bw() +
