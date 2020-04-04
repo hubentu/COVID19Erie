@@ -3,7 +3,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @importFrom forcats fct_relevel
-#' @importFrom plotly ggplotly
+#' @importFrom plotly ggplotly plot_ly
 #' @import ggplot2
 #' @export
 
