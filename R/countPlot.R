@@ -59,6 +59,8 @@ countPlot <- function(historyCount, update = FALSE){
         layout(yaxis = list(title = "counts"),
                updatemenus = list(list(
                    active = 0,
+                   x = 0.1,
+                   y = 1,
                    buttons= list(
                        list(label = 'linear',
                             method = 'update',

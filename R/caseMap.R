@@ -28,7 +28,7 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
     }, dat@data$town, dat@data$confirmed, dat@data$recovered, dat@data$deaths,
     SIMPLIFY = FALSE, USE.NAMES = FALSE)
     
-    bins <- c(1, 5, 10, 15, 20, 50, 100, Inf)
+    bins <- c(1, 5, 10, 20, 50, 100, 500, Inf)
     pal <- colorBin("YlOrRd", domain = dat@data$confirmed, bins = bins)
     lf <- leaflet(dat)  %>% addTiles() %>%
         setView(-78.8, 42.8, 10) %>%
@@ -48,7 +48,8 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
         addLayersControl(
             overlayGroups =c("Case Counts", "Public Advisories"),
             options = layersControlOptions(collapsed=FALSE)
-        )
+        ) %>%
+        hideGroup("Public Advisories")
     if(!is.null(titlePos)){
         lf <- lf %>% addTitle(paste("COVID19 cases (Erie county)<br>",
                               "Confirmed Count:", sum(counts$confirmed), "<br>",

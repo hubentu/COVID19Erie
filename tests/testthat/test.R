@@ -2,7 +2,7 @@
 ## data("shapeData")
 ## data("pubExposed")
 counts <- caseCounts()
-pubExposed <- exposedPub()
+## pubExposed <- exposedPub()
 ## caseMap(counts, pubExposed)
 historyCount <- countPlot(historyCount, update = TRUE)
 rownames(historyCount) <- NULL
@@ -21,13 +21,15 @@ fig <- plot_ly(historyCount, x = ~date, y = ~confirmed, name = 'confirmed', type
 fig <- fig %>%
     layout(yaxis = list(title = "counts"),
         updatemenus = list(list(
-               active = 0,
-               buttons= list(
-                   list(label = 'linear',
-                        method = 'update',
-                        args = list(list(visible = c(T,T,T,T,T)),
-                                    list(yaxis = list(type = 'linear')))),
-                   list(label = 'log',
-                        method = 'update', 
-                        args = list(list(visible = c(T,T,T,T,T)),
-                                    list(yaxis = list(type = 'log'))))))))
+            active = 0,
+            x = 0.1,
+            y = 1,
+            buttons= list(
+                list(label = 'linear',
+                     method = 'update',
+                     args = list(list(visible = c(T,T,T,T,T)),
+                                 list(yaxis = list(type = 'linear')))),
+                list(label = 'log',
+                     method = 'update', 
+                     args = list(list(visible = c(T,T,T,T,T)),
+                                 list(yaxis = list(type = 'log'))))))))
