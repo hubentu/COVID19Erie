@@ -12,10 +12,10 @@ caseCounts <- function(){
     contents <- ses$findElement(".dashboard-page")$getText()
     ## dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
     dat <- strsplit(contents, split = "\n")[[1]]
-    t_active <- as.integer(dat[grep("Active Cases", dat)[1] + 1])
-    t_recovered <- as.integer(dat[grep("Recovered", dat)[1] + 1])
-    t_deaths <- as.integer(dat[grep("Total Deaths", dat)[1] + 1])
-    t_confirmed <- as.integer(dat[grep("Confirmed Cases", dat)[1] + 1])
+    t_active <- as.integer(gsub(",", "", dat[grep("Active Cases", dat)[1] + 1]))
+    t_recovered <- as.integer(gsub(",","",dat[grep("Recovered", dat)[1] + 1]))
+    t_deaths <- as.integer(gsub(",","",dat[grep("Total Deaths", dat)[1] + 1]))
+    t_confirmed <- as.integer(gsub(",", "", dat[grep("Confirmed Cases", dat)[1] + 1]))
     
     ## confirmed <- dat[(grep("Total Confirmed", dat) + 3):(length(dat)-1)]
     idx1 <- grep("[0-9] Confirmed", dat)[1]
