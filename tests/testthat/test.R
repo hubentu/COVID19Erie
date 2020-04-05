@@ -7,9 +7,8 @@ counts <- caseCounts()
 historyCount <- countPlot(historyCount, update = TRUE)
 rownames(historyCount) <- NULL
 use_data(historyCount, overwrite=TRUE)
-report <- caseReport(counts, pubExposed, historyCount)
-htmlwidgets::saveWidget(report, "index.html")
-
+## report <- caseReport(counts, pubExposed, historyCount)
+## htmlwidgets::saveWidget(report, "index.html")
 rmarkdown::render("vignettes/dashboard.Rmd")
 
 fig <- plot_ly(historyCount, x = ~date, y = ~confirmed, name = 'confirmed', type = 'scatter', mode = 'lines+markers') %>%
