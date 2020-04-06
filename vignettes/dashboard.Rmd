@@ -29,7 +29,7 @@ ycount <- historyCount$confirmed[historyCount$date == Sys.Date() - 1]
 ncount <- attributes(counts)$total.confirmed - ycount
 ```
 
-Row {data-width=400}
+Row {data-width=300}
 -----------------------------------------------------------------------
 
 ### confirmed {.value-box}
