@@ -58,10 +58,10 @@ shapeData <- spTransform(shapeData, CRS("+proj=longlat +ellps=GRS80"))
 save_data(shapeData)
 
 ## https://catalog.data.gov/dataset/tiger-line-shapefile-2019-2010-nation-u-s-2010-census-5-digit-zip-code-tabulation-area-zcta5-na
-zipData <- readOGR("~/Downloads/tl_2019_us_zcta510/")
+zipData <- readOGR("~/Downloads/tl_2019_us_zcta510")
 zipData <- spTransform(zipData, CRS("+proj=longlat +ellps=GRS80"))
-
-
+head(zipData@data)
+zipDataBuf <- zipData[grep("^14", zipData@data$ZCTA5CE10),]
 
 ## Leaflet
 fullName <- paste(counts$town, "town")
@@ -148,3 +148,72 @@ combineWidgets(lf, combineWidgets(chtml, pl, nrow = 2, rowsize = c(3, 2)),
 
 ##
 library(flexdashboard)
+
+##
+dat1 <- zipDataBuf[match(Counts$zipCounts$zip, zipDataBuf@data$ZCTA5CE10),]
+dat1@data$confirmed <- Counts$zipCounts$confirmed
+
+lf <- leaflet(dat)  %>% addTiles() %>%
+    setView(-78.8, 42.8, 10) %>%
+    addPolygons(
+        fillColor = ~pal(confirmed),
+        col = 'white',
+        dashArray = "3",
+        weight = 2,
+        label = labs,
+        fillOpacity = 0.5,
+        group = "Case Counts") %>%
+    addLegend("bottomright", pal = pal, values = ~confirmed,
+              title = "confirmed") %>%
+    addMarkers(pubExposed$lon, pubExposed$lat,
+               label = pubExposed$notes,
+               group = "Public Advisories") %>%
+    addLayersControl(
+        overlayGroups =c("Case Counts", "Public Advisories"),
+        options = layersControlOptions(collapsed=FALSE)
+    ) %>%
+    hideGroup("Public Advisories") %>%
+    addPolygons(
+        map = dat1,
+        fillColor = ~pal(confirmed),
+        col = 'white',
+        dashArray = "3",
+        weight = 2,
+        label = labs,
+        fillOpacity = 0.5,
+        group = "Zipcode Counts"
+    ) %>%
+    hideGroup("Zipcode Counts")
+
+
+lab1 <- mapply(function(n, x){
+    HTML(paste0(n, "<br>",
+                "confirmed: ", x, "<br>",
+                "updated: ", gsub("\\(updated |\\)", "", attributes(counts)$update.time)))
+}, dat1@data$ZCTA5CE10, dat1@data$confirmed, SIMPLIFY = FALSE, USE.NAMES = FALSE)
+bins <- c(1, 5, 10, 20, 50, 100, 500, Inf)
+pal1 <- colorBin("YlOrRd", domain = dat1@data$confirmed, bins = bins)
+leaflet(dat)  %>% addTiles() %>%
+    setView(-78.8, 42.8, 10) %>%
+    addPolygons(
+        data = dat1,
+        fillColor = ~pal1(confirmed),
+        col = 'white',
+        dashArray = "3",
+        weight = 2,
+        label = lab1,
+        fillOpacity = 0.5,
+        group = "Zip Counts") %>%
+    addPolygons(
+        fillColor = ~pal(confirmed),
+        col = 'white',
+        dashArray = "3",
+        weight = 2,
+        label = labs,
+        fillOpacity = 0.5,
+        group = "Town Counts") %>%
+    addLayersControl(
+        baseGroups =c("Town Counts", "Zip Counts"),
+        options = layersControlOptions(collapsed=FALSE)
+    ) %>%
+

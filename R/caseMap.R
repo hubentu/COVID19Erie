@@ -4,7 +4,8 @@
 #' @import sp
 #' @importFrom htmltools HTML
 #' @export
-caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
+caseMap <- function(Counts, pubExposed, titlePos = c(10, 10)){
+    counts <- Counts$counts
     fullName <- paste(counts$town, "town")
     fullName[fullName == "Buffalo town"] <- "Buffalo city"
     fullName[fullName == "Lackawanna town"] <- "Lackawanna city"
@@ -30,6 +31,17 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
     
     bins <- c(1, 5, 10, 20, 50, 100, 500, Inf)
     pal <- colorBin("YlOrRd", domain = dat@data$confirmed, bins = bins)
+
+    dat1 <- zipDataBuf[match(Counts$zipCounts$zip, zipDataBuf@data$ZCTA5CE10),]
+    dat1@data$confirmed <- Counts$zipCounts$confirmed
+    lab1 <- mapply(function(n, x){
+        HTML(paste0(n, "<br>",
+                    "confirmed: ", x, "<br>",
+                    "updated: ", gsub("\\(updated |\\)", "", attributes(counts)$update.time)))
+    }, dat1@data$ZCTA5CE10, dat1@data$confirmed, SIMPLIFY = FALSE, USE.NAMES = FALSE)
+    bins <- c(1, 5, 10, 20, 50, 100, 500, Inf)
+    pal1 <- colorBin("YlOrRd", domain = dat1@data$confirmed, bins = bins)
+    
     lf <- leaflet(dat)  %>% addTiles() %>%
         setView(-78.8, 42.8, 10) %>%
         addPolygons(
@@ -39,17 +51,28 @@ caseMap <- function(counts, pubExposed, titlePos = c(10, 10)){
             weight = 2,
             label = labs,
             fillOpacity = 0.5,
-            group = "Case Counts") %>%
+            group = "Town Counts") %>%
         addLegend("bottomright", pal = pal, values = ~confirmed,
                   title = "confirmed") %>%
         addMarkers(pubExposed$lon, pubExposed$lat,
                    label = pubExposed$notes,
                    group = "Public Advisories") %>%
+        addPolygons(
+            data = dat1,
+            fillColor = ~pal1(confirmed),
+            col = 'white',
+            dashArray = "3",
+            weight = 2,
+            label = lab1,
+            fillOpacity = 0.5,
+            group = "Zip Counts") %>%
         addLayersControl(
-            overlayGroups =c("Case Counts", "Public Advisories"),
+            baseGroups = c("Zip Counts", "Town Counts"),
+            overlayGroups =c("Public Advisories"),
             options = layersControlOptions(collapsed=FALSE)
         ) %>%
         hideGroup("Public Advisories")
+    
     if(!is.null(titlePos)){
         lf <- lf %>% addTitle(paste("COVID19 cases (Erie county)<br>",
                               "Confirmed Count:", sum(counts$confirmed), "<br>",

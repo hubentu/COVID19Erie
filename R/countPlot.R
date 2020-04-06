@@ -10,7 +10,8 @@
 countPlot <- function(historyCount, update = FALSE){
     if(update){
         if(!as.character(Sys.Date()) %in% historyCount$date){
-            counts <- caseCounts()
+            Counts <- caseCounts()
+            counts <- Counts$counts
             ## current <- colSums(counts[,-1])
             attr <- attributes(counts)
             current <- data.frame(date = as.character(Sys.Date()),
