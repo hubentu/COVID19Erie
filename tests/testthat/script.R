@@ -57,6 +57,12 @@ shapeData <- readOGR("/home/hq/Workspace/COVID19_Erie/shape")
 shapeData <- spTransform(shapeData, CRS("+proj=longlat +ellps=GRS80"))
 save_data(shapeData)
 
+## https://catalog.data.gov/dataset/tiger-line-shapefile-2019-2010-nation-u-s-2010-census-5-digit-zip-code-tabulation-area-zcta5-na
+zipData <- readOGR("~/Downloads/tl_2019_us_zcta510/")
+zipData <- spTransform(zipData, CRS("+proj=longlat +ellps=GRS80"))
+
+
+
 ## Leaflet
 fullName <- paste(counts$town, "town")
 fullName[fullName == "Buffalo town"] <- "Buffalo city"

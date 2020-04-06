@@ -19,14 +19,15 @@ caseCounts <- function(){
     
     ## confirmed <- dat[(grep("Total Confirmed", dat) + 3):(length(dat)-1)]
     idx1 <- grep("[0-9] Confirmed", dat)[1]
-    idx2 <- tail(grep("[0-9] Confirmed", dat), 1) + 1
+    ## idx2 <- tail(grep("[0-9] Confirmed", dat), 1) + 1
+    idx2 <- grep("Confirmed Cases by Zip Code", dat) - 1
     confirmed <- dat[idx1:idx2]
     confirmed <- data.frame(
         town = sub("\\/.*", "", confirmed[seq(2, length(confirmed), 2)]),
         confirmed = as.integer(sub(" .*", "", confirmed[seq(1, length(confirmed), 2)])),
         stringsAsFactors = FALSE)
     counts <- data.frame(confirmed, recovered = NA, deaths = NA)
-    
+
     ## updateT <- ses$findElement("#ember10")$getText()
     ## updateT <- strsplit(updateT, split = "\n")[[1]][2]
     updateT <- dat[grep("updated", dat)]
