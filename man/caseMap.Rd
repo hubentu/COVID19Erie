@@ -4,7 +4,7 @@
 \alias{caseMap}
 \title{Plot leaflet Map}
 \usage{
-caseMap(counts, pubExposed, titlePos = c(10, 10))
+caseMap(Counts, pubExposed, titlePos = c(10, 10))
 }
 \description{
 Plot leaflet Map

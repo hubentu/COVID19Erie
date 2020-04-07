@@ -20,7 +20,7 @@ library(COVID19Erie)
 pubExposed <- exposedPub()
 ```
 
-```{r, eval=FALSE}
+```{r}
 Counts <- caseCounts()
 counts <- Counts$counts
 ctable1 <- rbind(counts,
@@ -129,7 +129,7 @@ datatable(historyCount[order(historyCount$date, decreasing = TRUE),],
 ```{r}
 library(knitr)
 library(kableExtra)
-kable(historyCount[order(historyCount$date, decreasing = TRUE), -3]) %>%
-    kable_styling()%>%
+kable(historyCount[order(historyCount$date, decreasing = TRUE),]) %>%
+    kable_styling(font_size = 8)%>%
     scroll_box(height = "600px", width = "100%")
 ```
