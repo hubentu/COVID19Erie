@@ -29,6 +29,8 @@ countPlot <- function(historyCount, update = FALSE){
                        new = confirmed - ycount) %>%
                 select(date, confirmed, new, active, recovered, deaths)
             return(historyCount)
+        }else{
+            return(historyCount)
         }
     }
     ## historyCount$active <- historyCount$confirmed - historyCount$recovered - historyCount$deaths

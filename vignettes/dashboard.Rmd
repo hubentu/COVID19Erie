@@ -1,6 +1,6 @@
 ---
 title: COVID19 in Erie county
-date: "`r gsub('\\(updated |\\ EST)|/2020', '', attributes(counts)$update.time)`"
+date: "`r gsub('\\(updated |\\ EST)|/2020', '', attributes(Counts$counts)$update.time)`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
@@ -13,6 +13,7 @@ output:
     vertical_layout: scroll
 ---
 
+
 ```{r setup, include=FALSE, eval=FALSE}
 library(flexdashboard)
 library(fontawesome)
@@ -20,7 +21,7 @@ library(COVID19Erie)
 pubExposed <- exposedPub()
 ```
 
-```{r}
+```{r, eval=FALSE}
 Counts <- caseCounts()
 counts <- Counts$counts
 ctable1 <- rbind(counts,
