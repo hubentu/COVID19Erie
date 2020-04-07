@@ -13,11 +13,11 @@ output:
     vertical_layout: scroll
 ---
 
-```{r setup, include=FALSE, eval=FALSE}
+```{r setup, include=FALSE}
 library(flexdashboard)
 library(fontawesome)
-library(COVID19Erie)
-pubExposed <- exposedPub()
+## library(COVID19Erie)
+## pubExposed <- exposedPub()
 ```
 
 ```{r}
