@@ -13,7 +13,6 @@ output:
     vertical_layout: scroll
 ---
 
-
 ```{r setup, include=FALSE, eval=FALSE}
 library(flexdashboard)
 library(fontawesome)
@@ -97,7 +96,7 @@ Row
 ### Zipcode cases
 ```{r}
 library(DT)
-datatable(Counts$zipCounts)
+datatable(Counts$zipCounts, options = list(scrollX = T))
 ```
 
 ### Town cases
@@ -113,17 +112,24 @@ datatable(Counts$zipCounts)
 ##                          "[Public Advisories](http://www2.erie.gov/health/index.php?q=public-advisories)",
 ##                          "The data is only for educational and academic research purposes.")) %>%
 ## scroll_box(height = "600px")
-datatable(ctable1[,1:2])
+datatable(ctable1[,1:2], options = list(scrollX = T))
 ```
 
 Row
 ----------------------------------------------------------------------
 
-### Daily counts
+### Daily counts {.no-mobile}
 ```{r}
-## kable(historyCount[order(historyCount$date, decreasing = TRUE),],
-##       caption = "COVID19 Daily cases (Erie county)") %>%
-##     kable_styling(full_width = TRUE)%>%
-##     scroll_box(height = "600px")
-datatable(historyCount[order(historyCount$date, decreasing = TRUE),])
+datatable(historyCount[order(historyCount$date, decreasing = TRUE),],
+          extensions = 'Scroller',
+          options = list(scrollX = TRUE))
+```
+
+### Daily counts {.mobile}
+```{r}
+library(knitr)
+library(kableExtra)
+kable(historyCount[order(historyCount$date, decreasing = TRUE), -3]) %>%
+    kable_styling()%>%
+    scroll_box(height = "600px", width = "100%")
 ```
