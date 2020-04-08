@@ -1,4 +1,5 @@
 library(COVID19Erie)
+library(devtools)
 ## data("shapeData")
 ## data("pubExposed")
 Counts <- caseCounts()
