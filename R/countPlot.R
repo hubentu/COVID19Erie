@@ -4,7 +4,6 @@
 #' @import tidyr
 #' @importFrom forcats fct_relevel
 #' @import plotly
-#' @import ggplot2
 #' @export
 
 countPlot <- function(historyCount, update = FALSE){

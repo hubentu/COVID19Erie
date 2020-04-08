@@ -32,8 +32,9 @@ caseMap <- function(Counts, pubExposed, titlePos = c(10, 10)){
     bins <- c(1, 5, 10, 20, 50, 100, 500, Inf)
     pal <- colorBin("YlOrRd", domain = dat@data$confirmed, bins = bins)
 
-    dat1 <- zipDataBuf[match(Counts$zipCounts$zip, zipDataBuf@data$ZCTA5CE10),]
-    dat1@data$confirmed <- Counts$zipCounts$confirmed
+    idx <- match(Counts$zipCounts$zip, zipDataBuf@data$ZCTA5CE10)
+    dat1 <- zipDataBuf[na.omit(idx),]
+    dat1@data$confirmed <- Counts$zipCounts$confirmed[!is.na(idx)]
     lab1 <- mapply(function(n, x){
         HTML(paste0(n, "<br>",
                     "confirmed: ", x, "<br>",
