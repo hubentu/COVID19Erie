@@ -28,7 +28,8 @@ caseCounts <- function(){
         stringsAsFactors = FALSE)
     counts <- data.frame(confirmed, recovered = NA, deaths = NA)
     updateT <- dat[grep("updated", dat)]
-
+    updateT <- paste0(sub("EST .*", "EST", updateT), ")")
+    
     attributes(counts)$update.time <- updateT
     attributes(counts)$total.recovered <- t_recovered
     attributes(counts)$total.confirmed <- t_confirmed
