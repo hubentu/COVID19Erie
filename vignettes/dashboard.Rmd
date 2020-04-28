@@ -43,26 +43,36 @@ valueBox(
 )
 ```
 
-### Active Cases {.value-box}
+### People tested
 ```{r}
 valueBox(
-  value = attributes(counts)$active.cases,
-  caption = "Active cases",
+  value = attributes(counts)$people.tested,
+  caption = "People tested",
   icon = "fas fa-hospital-user",
   color = "#1f77b4"
 )
 ```
 
-### recovered {.value-box}
-
+### Active/Recovered Cases {.value-box}
 ```{r}
 valueBox(
-  value = attributes(counts)$total.recovered,
-  caption = "Total recovered cases",
-  icon = "fas fa-head-side-mask",
+  value = attributes(counts)$active.cases,
+  caption = "Active cases",
+  icon = "fas fa-hospital-user",
   color = "forestgreen"
 )
 ```
+
+<!-- ### recovered {.value-box} -->
+
+<!-- ```{r} -->
+<!-- valueBox( -->
+<!--   value = attributes(counts)$total.recovered, -->
+<!--   caption = "Total recovered cases", -->
+<!--   icon = "fas fa-head-side-mask", -->
+<!--   color = "forestgreen" -->
+<!-- ) -->
+<!-- ``` -->
 
 ### death {.value-box}
 

@@ -16,6 +16,7 @@ caseCounts <- function(){
     t_recovered <- as.integer(gsub(",","",dat[grep("Recovered", dat)[1] + 1]))
     t_deaths <- as.integer(gsub(",","",dat[grep("Total Deaths", dat)[1] + 1]))
     t_confirmed <- as.integer(gsub(",", "", dat[grep("Confirmed Cases", dat)[1] + 1]))
+    t_tested <- as.integer(gsub(",", "", dat[grep("People Tested", dat)[1] + 1]))
     
     ## confirmed <- dat[(grep("Total Confirmed", dat) + 3):(length(dat)-1)]
     idx1 <- grep("[0-9] Confirmed", dat)[1]
@@ -24,7 +25,7 @@ caseCounts <- function(){
     confirmed <- dat[idx1:idx2]
     confirmed <- data.frame(
         town = sub("\\/.*", "", confirmed[seq(2, length(confirmed), 2)]),
-        confirmed = as.integer(sub(" .*", "", confirmed[seq(1, length(confirmed), 2)])),
+        confirmed = as.integer(gsub(",", "", sub(" .*", "", confirmed[seq(1, length(confirmed), 2)]))),
         stringsAsFactors = FALSE)
     counts <- data.frame(confirmed, recovered = NA, deaths = NA)
     updateT <- dat[grep("updated", dat)]
@@ -35,11 +36,12 @@ caseCounts <- function(){
     attributes(counts)$total.confirmed <- t_confirmed
     attributes(counts)$total.deaths <- t_deaths
     attributes(counts)$active.cases <- t_active
+    attributes(counts)$people.tested <- t_tested
 
     ## zip
     dat1 <- dat[(idx2 + 2):length(dat)]
     idx3 <- grep("[0-9] Confirmed", dat1)
     zipCounts <- data.frame(zip=dat1[idx3 - 1],
-                            confirmed=as.integer(sub(" Confirmed", "", dat1[idx3])))
+                            confirmed=as.integer(gsub(",","",sub(" Confirmed", "", dat1[idx3]))))
     return(list(counts = counts, zipCounts = zipCounts))
 }
