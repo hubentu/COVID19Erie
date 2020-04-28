@@ -42,6 +42,7 @@ caseCounts <- function(){
     dat1 <- dat[(idx2 + 2):length(dat)]
     idx3 <- grep("[0-9] Confirmed", dat1)
     zipCounts <- data.frame(zip=dat1[idx3 - 1],
-                            confirmed=as.integer(gsub(",","",sub(" Confirmed", "", dat1[idx3]))))
+                            confirmed=as.integer(gsub(",","",sub(" Confirmed", "", dat1[idx3]))),
+                            stringsAsFactors = FALSE)
     return(list(counts = counts, zipCounts = zipCounts))
 }
