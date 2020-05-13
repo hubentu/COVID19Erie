@@ -43,21 +43,21 @@ valueBox(
 )
 ```
 
-### People tested
+### PCR tests {.value-box}
 ```{r}
 valueBox(
-  value = attributes(counts)$people.tested,
-  caption = "People tested",
+  value = attributes(counts)$PCR.tested,
+  caption = "Total PCR (Swab) Tests",
   icon = "fas fa-hospital-user",
   color = "#1f77b4"
 )
 ```
 
-### Active/Recovered Cases {.value-box}
+### Antibody Tests {.value-box}
 ```{r}
 valueBox(
-  value = attributes(counts)$active.cases,
-  caption = "Active cases",
+  value = attributes(counts)$Antibody.tested,
+  caption = "Total Antibody Tests",
   icon = "fas fa-hospital-user",
   color = "forestgreen"
 )
