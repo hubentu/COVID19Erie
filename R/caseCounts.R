@@ -1,17 +1,24 @@
 #' Case Counts
 #'
-#' @import webdriver
+#' @import rvest
 #' @export
 caseCounts <- function(){
-    pjs <- run_phantomjs()
-    ses <- Session$new(port = pjs$port)
-    ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
-    Sys.sleep(10)
-    ## contents <- ses$findElement("#ember6")$getText()
-    ## contents <- ses$getActiveElement()$getText()
-    contents <- ses$findElement(".dashboard-page")$getText()
+    ## pjs <- run_phantomjs()
+    ## ses <- Session$new(port = pjs$port)
+    ## ses$go("https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1")
+    ## Sys.sleep(10)
+    ## ## contents <- ses$findElement("#ember6")$getText()
+    ## ## contents <- ses$getActiveElement()$getText()
+    ## contents <- ses$findElement(".dashboard-page")$getText()
+
     ## dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
+    html <- system.file("tests/testthat/erie.html", package="COVID19Erie")
+    contents <- read_html(html) %>% html_nodes(".dashboard-page") %>% html_text()
+
     dat <- strsplit(contents, split = "\n")[[1]]
+    dat <- gsub("  ", "", dat)
+    dat <- dat[nchar(dat)>1]
+
     t_active <- as.integer(gsub(",", "", dat[grep("Active Cases", dat)[1] + 1]))
     t_recovered <- as.integer(gsub(",","",dat[grep("Recovered", dat)[1] + 1]))
     t_deaths <- as.integer(gsub(",","",dat[grep("Total Deaths", dat)[1] + 1]))

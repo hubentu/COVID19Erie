@@ -15,7 +15,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(fontawesome)
+## library(fontawesome)
 ## library(COVID19Erie)
 ## pubExposed <- exposedPub()
 ```

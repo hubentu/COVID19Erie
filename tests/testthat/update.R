@@ -14,4 +14,3 @@ if(format(Sys.time(), "%H:%M") > "22:30"){
 ## report <- caseReport(counts, pubExposed, historyCount)
 ## htmlwidgets::saveWidget(report, "index.html")
 rmarkdown::render("vignettes/dashboard.Rmd")
-
