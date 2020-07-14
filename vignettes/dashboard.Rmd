@@ -1,6 +1,6 @@
 ---
 title: COVID19(Erie county)
-date: "`r gsub('\\(updated |\\ EST)|/2020', '', attributes(Counts$counts)$update.time)`"
+date: "`r gsub('\\(updated |\\ EST)|/2020', ' ', attributes(Counts$counts)$update.time)`"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
