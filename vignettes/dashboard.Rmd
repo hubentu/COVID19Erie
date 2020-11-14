@@ -25,8 +25,9 @@ Counts <- caseCounts()
 counts <- Counts$counts
 ctable1 <- rbind(counts,
                 c(town = "Total", colSums(counts[,-1])))
-ycount <- historyCount$confirmed[historyCount$date == Sys.Date() - 1]
-ncount <- attributes(counts)$total.confirmed - ycount
+##ycount <- historyCount$confirmed[historyCount$date == Sys.Date() - 1]
+##ncount <- attributes(counts)$total.confirmed - ycount
+ncount <- tail(historyCount$new, 1)
 ```
 
 Row {data-width=300}

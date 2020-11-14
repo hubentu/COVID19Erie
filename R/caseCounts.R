@@ -1,6 +1,8 @@
 #' Case Counts
 #'
 #' @import rvest
+#' @import RSelenium
+#' @import xfun
 #' @export
 caseCounts <- function(){
     ## pjs <- run_phantomjs()
@@ -10,9 +12,19 @@ caseCounts <- function(){
     ## ## contents <- ses$findElement("#ember6")$getText()
     ## ## contents <- ses$getActiveElement()$getText()
     ## contents <- ses$findElement(".dashboard-page")$getText()
-
+    url <- "https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1"
+    rD <- RSelenium::rsDriver(browser="firefox",
+                          extraCapabilities = list("moz:firefoxOptions" = list(
+                                                       args = list('--headless')))
+                          )
+    driver <- rD$client
+    driver$navigate(url)
+    Sys.sleep(9)
+    html <- driver$getPageSource()[[1]]
+    driver$close()
+    rD$server$stop()
     ## dat <- strsplit(ses$findElement("#ember20")$getText()[[1]], split = "\n")[[1]]
-    html <- system.file("tests/testthat/erie.html", package="COVID19Erie")
+    ##html <- system.file("tests/testthat/erie.html", package="COVID19Erie")
     contents <- read_html(html) %>% html_nodes(".dashboard-page") %>% html_text()
 
     dat <- strsplit(contents, split = "\n")[[1]]
