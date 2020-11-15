@@ -15,8 +15,8 @@ caseCounts <- function(){
     url <- "https://erieny.maps.arcgis.com/apps/opsdashboard/index.html#/dd7f1c0c352e4192ab162a1dfadc58e1"
     rD <- RSelenium::rsDriver(browser="firefox",
                           extraCapabilities = list("moz:firefoxOptions" = list(
-                                                       args = list('--headless')))
-                          )
+                                                       args = list('--headless'))),
+                          port = 2345L)
     driver <- rD$client
     driver$navigate(url)
     Sys.sleep(9)
